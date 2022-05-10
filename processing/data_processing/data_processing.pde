@@ -1,6 +1,6 @@
 
 // importing libraries that we will use
-import grafica.*;
+//import grafica.*;
 
 import oscP5.*;
 import netP5.*;
@@ -8,6 +8,7 @@ import netP5.*;
 // the minibee to which we will be listening in this sketch:
 int myMiniBeeID = 1;
 
+PFont f;
 
 // instance of the OSC connection
 OscP5 oscP5;
@@ -20,49 +21,55 @@ int oscTargetPort = 57120;
 // Prepare the points for the plot
 int nPoints = 100;
 
-// prepare the different graphs for the plot
-CIPlotter3Axes acceleroPlot = new CIPlotter3Axes( this, 100 );
-CIPlotter2 pressurePlot = new CIPlotter2( this, 200 );
-CIPlotter2 tailPlot = new CIPlotter2( this, 200 );
-
-// later we can add more graphs for derived data
-//CIPlotter2 pressureVarPlot = new CIPlotter2( this, 200 );
-//CIPlotter2 tailVarPlot = new CIPlotter2( this, 200 );
-
-
 // setup function
 // here we initiase all the plots and the OSC connection
 void setup()
-{
-    size(1300, 700);
+{    
+    size(640, 360);
+    colorMode(HSB, width, 100, height);
+    noStroke();
     background(0);
-    
-    acceleroPlot.initLinePlot( "Accelerometer", 0, 0, 900, 150, "time", "acceleration" );
-    acceleroPlot.init2DPlot( "Accelerometer", 1000, 0, 200, 150, "x", "y/z" );
-
-    pressurePlot.initLinePlot( "Pressure sensor", 0, 220, 1200, 155, "time", "pressure" );
-    tailPlot.initLinePlot( "Tail sensor", 0, 445, 1200, 155, "time", "tail" );
-
-    //pressureVarPlot.initLinePlot( "Pressure Variation", 0, 750, 900, 180, "time", "pressure variation" );
-    //tailVarPlot.initLinePlot( "Tail Variation", 950, 750, 900, 180, "time", "tail variation" );
-
-
+  
     /* start oscP5, listening for incoming messages at port 12000 */
     oscP5 = new OscP5(this,12000);
     //   oscTarget = new NetAddress("127.0.0.1",57121);
 
+  //printArray(PFont.list());
+//  PFont.list();
+  f = createFont(PFont.list()[2322], 24);
+  textFont(f);
 }
+
+float value1 = 0.5;
+float output = 0.6;
+float prevOutput = 0;
+float alpha=0.05;
+
 
 // the draw function: here we call the update functions of each plot to redraw the data
 public void draw() {
-  background(0);  
-  acceleroPlot.updateLinePlot();
-  acceleroPlot.update2DPlot();
+  background(0); 
+  noStroke();
+  fill(200, 200, 100);
+  int barheight1 = (int) (value1*height);
+  int barheight2 = (int) (output*height);
+  rect(width*0.3, barheight1, width*0.15, height - barheight1);
+  rect(width*0.55, barheight2, width*0.15, height - barheight2);
   
-  pressurePlot.updateLinePlot();
-  tailPlot.updateLinePlot();
-  //pressureVarPlot.updateLinePlot();
-  //tailVarPlot.updateLinePlot();
+  textAlign(RIGHT);
+  drawValue(width * 0.25, value1);
+
+  textAlign(LEFT);
+  drawValue(width * 0.75, output);
+
+}
+
+void drawValue(float x, float val) {
+  stroke(250);
+  line(x, 0, x, 65);
+  line(x, 100, x, height);
+  fill(250);
+  text(val, x, 95);
 }
 
 // oscEvent function: here we parse the incoming data and add it to the data to be plotted in the graphs
@@ -86,12 +93,15 @@ void oscEvent(OscMessage theOscMessage) {
         float z = theOscMessage.get(5).floatValue();
         //println( "x :" + x + ", y :" + y +", z :" + z ); // optionally, you can print the data here to for debugging
         
-        // add the data to the plots
-        pressurePlot.addPoint( v1, 0 );
-        tailPlot.addPoint( v2, 0 );
-        acceleroPlot.addPoint( x, y, z );
+        value1 = v1;
+        updateOutput();
         return;
       }
     }
   }
+}
+
+void updateOutput(){
+  prevOutput = output;
+  output = alpha * value1 + (1-alpha)*prevOutput;
 }
