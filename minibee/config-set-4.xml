@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<xml>
+  <hive name="myprojectname">
+    <minibee caps="1" configuration="1" id="1" libversion="10" name="" revision="F" serial="0013A200415E81DE">
+      <!--the id given inside the minibee tag is the unique id or number of the minibee-->
+      <!--the configutaion inside the minibee tag is the unique id of the configuration that is used. It has to match one of the configuration id's that are defined in this file.-->
+    </minibee>
+    <minibee caps="1" configuration="-1" id="2" libversion="10" name="" revision="F" serial="0013A200415E81D5">
+      <!--the id given inside the minibee tag is the unique id or number of the minibee-->
+      <!--the configutaion inside the minibee tag is the unique id of the configuration that is used. It has to match one of the configuration id's that are defined in this file.-->
+      <!--This minibee has no configuration yet! Change it to use one of the configurations in this file.-->
+    </minibee>
+    <configuration id="1" message_interval="50" name="accelero" redundancy="3" samples_per_message="1">
+      <pin config="TWIClock" id="A5" name="None"/>
+      <pin config="TWIData" id="A4" name="None"/>
+      <twi device="ADXL345" id="1" name="accelero"/>
+    </configuration>
+    <configuration id="2" message_interval="50" name="expee" redundancy="3" samples_per_message="1">
+      <pin config="AnalogOut" id="D10" name="led1"/>
+      <pin config="AnalogOut" id="D11" name="led2"/>
+      <pin config="AnalogIn10bit" id="A1" name="analog1"/>
+      <pin config="AnalogIn10bit" id="A0" name="analog0"/>
+      <pin config="AnalogIn10bit" id="A3" name="analog3"/>
+      <pin config="AnalogIn10bit" id="A2" name="analog2"/>
+      <pin config="TWIClock" id="A5" name="None"/>
+      <pin config="TWIData" id="A4" name="None"/>
+      <pin config="AnalogOut" id="D9" name="led0"/>
+      <pin config="AnalogOut" id="D6" name="led5"/>
+      <pin config="AnalogOut" id="D5" name="led4"/>
+      <pin config="AnalogOut" id="D3" name="led3"/>
+      <twi device="ADXL345" id="1" name="accelero"/>
+    </configuration>
+    <configuration id="3" message_interval="50" name="expree" redundancy="3" samples_per_message="1">
+      <pin config="DigitalIn" id="D10" name="digitaal6"/>
+      <pin config="AnalogIn10bit" id="A7" name="analog5"/>
+      <pin config="AnalogIn10bit" id="A6" name="analog4"/>
+      <pin config="AnalogIn10bit" id="A1" name="analog1"/>
+      <pin config="AnalogIn10bit" id="A0" name="analog0"/>
+      <pin config="AnalogIn10bit" id="A3" name="analog3"/>
+      <pin config="AnalogIn10bit" id="A2" name="analog2"/>
+      <pin config="TWIClock" id="A5" name="None"/>
+      <pin config="TWIData" id="A4" name="None"/>
+      <pin config="DigitalIn" id="D8" name="digitaal4"/>
+      <pin config="DigitalIn" id="D9" name="digitaal5"/>
+      <pin config="DigitalIn" id="D6" name="digitaal2"/>
+      <pin config="DigitalIn" id="D7" name="digitaal3"/>
+      <pin config="DigitalIn" id="D5" name="digitaal1"/>
+      <pin config="DigitalIn" id="D3" name="digitaal0"/>
+      <pin config="DigitalIn" id="D11" name="digitaal7"/>
+      <twi device="ADXL345" id="1" name="accelero"/>
+    </configuration>
+  </hive>
+</xml>
