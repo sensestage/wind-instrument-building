@@ -1,4 +1,3 @@
-
 // importing libraries that we will use
 //import grafica.*;
 
@@ -6,70 +5,154 @@ import oscP5.*;
 import netP5.*;
 
 // the minibee to which we will be listening in this sketch:
-int myMiniBeeID = 1;
-
-PFont f;
+int myMiniBeeID = 3;
+// ADAPT this port to something unique!
+int myPort = 12020;
 
 // instance of the OSC connection
 OscP5 oscP5;
 
 // settings for the OSC reception
-// NetAddress oscTarget;
-String oscTargetIP = "127.0.0.1";
-int oscTargetPort = 57120;
+NetAddress oscTarget;
+String myIP = "10.18.0.162";
+String oscTargetIP = "10.18.0.162";
+int oscTargetPort = 57300;
 
-// Prepare the points for the plot
-int nPoints = 100;
+PFont f;
+
+// input value
+float input = 0.5;
+float output1 = 0;
+float output2 = 0;
+float output3 = 0;
+float output4 = 0;
+float output5 = 0;
+
+
+// initialize parameters for range tracking
+float minimum = 1.0;
+float maximum = 0.0;
+
+// declare variable for slope calculation
+int prevTime;
+int triggerTime;
+
+// variable for mean calculation
+boolean initialized = false;
+
+
+// outputs for triggers
+boolean trigger1 = false;
+int upDown = 0;
+boolean trigger2 = false;
+boolean trigger3 = false;
 
 // setup function
 // here we initiase all the plots and the OSC connection
 void setup()
 {    
-    size(640, 360);
-    colorMode(HSB, width, 100, height);
+    size(1200, 360);
+    colorMode(HSB, 100, 100, 100);
     noStroke();
     background(0);
   
     /* start oscP5, listening for incoming messages at port 12000 */
-    oscP5 = new OscP5(this,12000);
-    //   oscTarget = new NetAddress("127.0.0.1",57121);
+    oscP5 = new OscP5(this,myPort);
+    oscTarget = new NetAddress(oscTargetIP,oscTargetPort);
+    // send a message to connect to the data    
+    OscMessage myMessage = new OscMessage("/XOSC/subscribe/tag");  
+    myMessage.add("/minibee/data");
+    myMessage.add(myPort);
+    oscP5.send(myMessage, oscTarget ); 
 
-  //printArray(PFont.list());
-//  PFont.list();
-  f = createFont(PFont.list()[2322], 24);
-  textFont(f);
+    f = createFont(PFont.list()[2322], 24);
+    textFont(f);
+    
+    prevTime = millis();
+    triggerTime = millis();
 }
 
-float value1 = 0.5;
-float output = 0.6;
-float prevOutput = 0;
-float alpha=0.05;
 
 
 // the draw function: here we call the update functions of each plot to redraw the data
 public void draw() {
   background(0); 
   noStroke();
-  fill(200, 200, 100);
-  int barheight1 = (int) (value1*height);
-  int barheight2 = (int) (output*height);
-  rect(width*0.3, barheight1, width*0.15, height - barheight1);
-  rect(width*0.55, barheight2, width*0.15, height - barheight2);
+  int barheightIn = (int) (input*height);
+  int barheight1 = (int) (output1*height);
+  int barheight2 = (int) (output2*height);
+  int barheight3 = (int) (output3*height);
+  int barheight4 = (int) (output4/2*height);
+  int barheight5 = (int) (output5/2*height);
   
-  textAlign(RIGHT);
-  drawValue(width * 0.25, value1);
-
+  fill(0, 100, 50);
+  rect(width*0.0, barheightIn, width*0.13, height - barheightIn);
+  
+  fill(10, 100, 50);
+  rect(width*0.17, barheight1, width*0.13, height - barheight1);
+  fill(20, 100, 50);
+  rect(width*0.34, barheight2, width*0.13, height - barheight2);
+  fill(30, 100, 50);
+  rect(width*0.5, barheight3, width*0.13, height - barheight3);
+  
+  // the last two are used for difference, so deviate from the middle
+  fill(40, 100, 50);
+  rect(width*0.67, (0.5*height), width*0.13, barheight4);
+  fill(50, 100, 50);
+  rect(width*0.83, (0.5*height), width*0.13, barheight5);
+  
+  stroke(80, 200, 100 );
+  line(width*0.0, minimum * height, width*1, minimum*height);
+  stroke(80, 200, 100 );
+  line(width*0.0, maximum * height, width*1, maximum*height);
+  
   textAlign(LEFT);
-  drawValue(width * 0.75, output);
+  drawValue(width * 0, input);
+  drawText( 0, "input" );
+
+  drawValue(width * 0.17, output1);
+  drawText( width * 0.2, "scaled" );
+  drawValue(width * 0.34, output2);
+  drawText( width * 0.34, "exp smooth" );
+  drawValue(width * 0.5, output3);
+  drawText( width * 0.5, "mean" );
+  drawValue(width * 0.67, output4);
+  drawText( width * 0.67, "deviation" );
+  drawValue(width * 0.83, output5);
+  drawText( width * 0.83, "delta" );
+
+  noStroke();
+  if ( trigger1 ){
+    fill(90,100,100);
+    rect(width*0.97, 0, width*0.03, height*0.15);
+  }
+  if ( upDown == 1 ){
+    fill(90,100,100);
+    rect(width*0.97, height*0.2, width*0.03, height*0.15);
+  } else if ( upDown == -1 ){
+    fill(10,100,100);
+    rect(width*0.97, height*0.2, width*0.03, height*0.15);
+  }
+  if ( trigger2 ){
+    fill(90,100,100);
+    rect(width*0.97, height*0.4, width*0.03, height*0.15);
+  }
+  if ( trigger3 ){
+    fill(90,100,100);
+    rect(width*0.97, height*0.6, width*0.03, height*0.15);
+  }
+
 
 }
 
+void drawText( float x, String text ){
+  fill(100);
+  text(text, x, height - 30);  
+}
+
 void drawValue(float x, float val) {
-  stroke(250);
-  line(x, 0, x, 65);
-  line(x, 100, x, height);
-  fill(250);
-  text(val, x, 95);
+  fill(100);
+  text(val, x, 30);
 }
 
 // oscEvent function: here we parse the incoming data and add it to the data to be plotted in the graphs
@@ -93,15 +176,249 @@ void oscEvent(OscMessage theOscMessage) {
         float z = theOscMessage.get(5).floatValue();
         //println( "x :" + x + ", y :" + y +", z :" + z ); // optionally, you can print the data here to for debugging
         
-        value1 = v1;
-        updateOutput();
+        input = v1;
+        
+        checkRange( input );
+        
+        // scaling (needs range)
+        output1 = scaleToRange( input );
+        
+        output2 = updateExponentialSmooth( output1 );
+        
+        //print( output1, output2 );
+        
+        if ( !initialized ){
+          initializeMean( output1 );
+        }
+        output3 = updateMean( output1 );
+        
+        output4 = deviation( input, output3 );
+        output5 = updateDelta( input );
+        //output = updateSlope( input );
+        
+        trigger1 = compareLarger( output1, 0.7 );
+        upDown = upOrDown( output1, 0.7 );
+        trigger2 = upDeadTime( output1, 0.7, 1000 ); // 1000 milliseconds (1 second) of dead time
+        trigger3 = triggerAboveReset( output1, 0.7, 0.5 ); // enable retrigger when going below 0.5
+        
         return;
       }
     }
   }
 }
 
-void updateOutput(){
-  prevOutput = output;
-  output = alpha * value1 + (1-alpha)*prevOutput;
+///--------- Tracking the range ---------
+void checkRange( float val ){
+  if ( val > maximum ){
+    maximum = val; 
+  }
+  if ( val < minimum ){
+    minimum = val;  
+  }
+}
+
+///--------- Scaling the data ---------
+
+float scaleToRange( float val ){
+  if ( minimum == maximum ){
+    print( "WARNING: maximum equals minimum, not scaling, returning input value" );
+    return val;  
+  }
+  float out = (val - minimum) / (maximum - minimum );
+  return out;
+}
+
+///--------- Invert (unipolar) -------------
+
+float invertUnipolar( float val ){
+  return ( 1 - val );  
+}
+
+///--------- Exponential smoothing ---------
+
+// variables for smoothing
+float smooth = 0.0;
+float prevSmooth = 0.0;
+float alpha=0.05;
+
+// exponential smoothing:
+float updateExponentialSmooth( float val ){
+  prevSmooth = smooth;
+  smooth = alpha * val + (1-alpha)*prevSmooth;
+  //println( "smooth: " + smooth + "alpha: " + alpha + "val: " + val ); 
+  return smooth;
+}
+
+///--------- Mean value ---------
+
+// variables for mean
+int windowSize = 10;
+float inputValues[];
+float sum = 0;
+int inputIndex=0;
+
+// calculating mean value:
+void initializeMean( float val ){ // initialization
+ inputValues = new float[windowSize];
+ for ( int i=0; i<windowSize; i++ ){
+   inputValues[i] = val;
+   sum += val;
+ }
+ initialized = true; 
+}
+
+float updateMean( float val ){ // update
+  sum -= inputValues[inputIndex];
+  sum += val;
+  inputValues[inputIndex] = val;
+  inputIndex++;
+  inputIndex = inputIndex%windowSize;
+  return (sum/windowSize);
+}
+
+///------------ Delta -------------
+float prevInputDelta = 0;
+
+float updateDelta( float val ){
+  float delta = val - prevInputDelta;
+  prevInputDelta = val;
+  return delta;
+}
+
+///------------ Slope -------------
+float prevInputSlope = 0;
+
+float updateSlope( float val ){
+  int now = millis(); 
+  float slope = (val-prevInputSlope) / (now-prevTime);
+  prevTime = now;
+  prevInputSlope = val;
+  return slope;
+}
+
+///------------- Deviation of smoothed signal ----------
+
+float deviation( float val, float smooth ){
+    return ( smooth - val );
+}
+
+///------------- Compare with threshold ----------------
+boolean compareLarger( float val, float threshold ){
+  return ( val > threshold);
+}
+
+boolean compareSmaller( float val, float threshold ){
+  return ( val < threshold);
+}
+
+float prevValUD=0;
+
+int upOrDown( float val, float threshold ){
+  if ( val > threshold ){ // now larger than threshold
+      // was it smaller before?
+      if ( prevValUD < threshold ){
+        prevValUD = val;
+        return 1; // going up  
+      }
+  }
+  if ( val < threshold ){ // now smaller than threshold
+      // was it smaller before?
+      if ( prevValUD > threshold ){
+        prevValUD = val;
+        return -1; // going down  
+      }
+  }
+  prevValUD = val;
+  return 0; // was already above or below threshold
+}
+
+/// ---- trigger with dead time -----
+
+boolean compareLargerDeadTime( float val, float threshold, int deadtime ){
+  int now = millis();
+  if ( val > threshold ){
+    if ( (now-triggerTime) > deadtime ){
+      triggerTime = now;
+      return true;
+    }
+  }
+  return false;
+}
+
+boolean compareSmallerDeadTime( float val, float threshold, int deadtime ){
+  int now = millis();
+  if ( val < threshold ){
+    if ( (now-triggerTime) > deadtime ){
+      triggerTime = now;
+      return true;
+    }
+  }
+  return false;
+}
+
+float prevValUDDT=0; // used by both upDeadTime and downDeadTime!
+
+boolean upDeadTime( float val, float threshold, int deadTime ){
+  int now = millis();
+  //println( "val: " + val + " prevValUDDT: " + prevValUDDT + " threshold: " + threshold + " deadTime " + deadTime + " triggerTime " + triggerTime + " now " + now );
+  if ( val > threshold ){ // now larger than threshold
+      // was it smaller before?
+      if ( prevValUDDT < threshold ){
+        prevValUDDT = val;
+        if ( (now-triggerTime) > deadTime ){
+          triggerTime = now;
+          return true; // going up 
+        }
+      }
+  }
+  prevValUDDT = val;
+  return false;
+}
+
+boolean downDeadTime( float val, float threshold, int deadTime ){
+  int now = millis();
+  if ( val < threshold ){ // now larger than threshold
+      // was it smaller before?
+      if ( prevValUDDT > threshold ){
+        prevValUDDT = val;
+        if ( (now-triggerTime) > deadTime ){
+          triggerTime = now;
+          return true; // going up 
+        }
+      }
+  }
+  prevValUDDT = val;
+  return false;
+}
+
+/// ---- trigger with reet threshold -----
+
+boolean canTrigger=true; // used both by triggerAboveReset and triggerBelowReset
+
+boolean triggerAboveReset( float val, float triggerThreshold, float resetThreshold ){
+  int now = millis();
+  if ( val > triggerThreshold ){ // now larger than threshold
+    if ( canTrigger ){
+      canTrigger = false;
+      return true;
+    }
+  }
+  if ( val < resetThreshold ){
+    canTrigger = true;  
+  }
+  return false;
+}
+
+boolean triggerBelowReset( float val, float triggerThreshold, float resetThreshold ){
+  int now = millis();
+  if ( val < triggerThreshold ){ // now larger than threshold
+    if ( canTrigger ){
+      canTrigger = false;
+      return true;
+    }
+  }
+  if ( val > resetThreshold ){
+    canTrigger = true;  
+  }
+  return false;
 }
