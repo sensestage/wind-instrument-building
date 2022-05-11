@@ -23,3 +23,6 @@ OSCdef( \minibeedata, { |data,time,source|
 // SWPlotterMonitor is a class available in the SenseWorld quark:
 ~plotter = SWPlotterMonitor.new( { ~newSensorData }, 100, ~newSensorData.size, 0.05 );
 ~plotter.start;
+
+
+~plotter.stop;
