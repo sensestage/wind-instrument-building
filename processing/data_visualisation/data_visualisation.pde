@@ -75,20 +75,25 @@ void oscEvent(OscMessage theOscMessage) {
  //println(" typetag: "+theOscMessage.typetag());
   
   if(theOscMessage.checkAddrPattern("/minibee/data")==true){ // look for for the message type
-    if(theOscMessage.checkTypetag("ifffff")) { // receiving int (id) and five float values for the data
+    if(theOscMessage.checkTypetag("ifffffff")) { // receiving int (id) and five float values for the data
       // parse theOscMessage and extract the values from the osc message arguments.
       int id = theOscMessage.get(0).intValue(); // get the minibee ID from the message arguments
       if ( id == myMiniBeeID ){ // if the minibee ID matches the one we are looking for, then parse the rest of the data
         float v1 = theOscMessage.get(1).floatValue();
         float v2 = theOscMessage.get(2).floatValue();
-        float x = theOscMessage.get(3).floatValue();
-        float y = theOscMessage.get(4).floatValue();
-        float z = theOscMessage.get(5).floatValue();
+        float v3 = theOscMessage.get(3).floatValue();
+        float v4 = theOscMessage.get(4).floatValue();
+        
+        float x = theOscMessage.get(5).floatValue();
+        float y = theOscMessage.get(6).floatValue();
+        float z = theOscMessage.get(7).floatValue();
         //println( "x :" + x + ", y :" + y +", z :" + z ); // optionally, you can print the data here to for debugging
         
         // add the data to the plots
-        pressurePlot.addPoint( v1, 0 );
-        tailPlot.addPoint( v2, 0 );
+        pressurePlot.addPoint( v3, 0 );
+        pressurePlot.addPoint( v4, 1 );
+        tailPlot.addPoint( v1, 0 );
+        tailPlot.addPoint( v2, 1 );
         acceleroPlot.addPoint( x, y, z );
         return;
       }

@@ -18,8 +18,8 @@ OSCdef( \minibeedata, { |data,time,source|
 );
 
 // check the length of the sensor data
-~newSensorData.length;
+~newSensorData.size;
 
 // SWPlotterMonitor is a class available in the SenseWorld quark:
-~plotter = SWPlotterMonitor.new( { ~newSensorData }, 100, ~newSensorData.length, 0.05 );
-
+~plotter = SWPlotterMonitor.new( { ~newSensorData }, 100, ~newSensorData.size, 0.05 );
+~plotter.start;
