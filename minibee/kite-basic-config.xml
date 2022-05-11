@@ -1,0 +1,19 @@
+<xml><hive name="myprojectname">
+
+  <configuration id="1" name="accelero" message_interval="50" samples_per_message="1">
+    <pin config="TWIData" id="A4" />
+    <pin config="TWIClock" id="A5" />
+    <twi id="1" device="ADXL345" name="accelero" />
+  </configuration>
+  
+  <configuration id="2" name="kite" message_interval="50" samples_per_message="1">
+    <pin config="TWIData" id="A4" />
+    <pin config="TWIClock" id="A5" />
+    <pin config="AnalogIn10bit" id="A0"  name="analog0" />
+    <pin config="AnalogIn10bit" id="A1"  name="analog1" />
+    <pin config="AnalogIn10bit" id="A2"  name="analog2" />
+    <pin config="AnalogIn10bit" id="A3"  name="analog3" />
+    <twi id="1" device="ADXL345" name="accelero" />
+  </configuration>
+
+</hive></xml>
