@@ -7,6 +7,7 @@ import netP5.*;
 
 // the minibee to which we will be listening in this sketch:
 int myMiniBeeID = 1;
+// ADAPT this port to something unique!
 int myPort = 12000;
 
 // instance of the OSC connection
@@ -47,12 +48,11 @@ void setup()
     //pressureVarPlot.initLinePlot( "Pressure Variation", 0, 750, 900, 180, "time", "pressure variation" );
     //tailVarPlot.initLinePlot( "Tail Variation", 950, 750, 900, 180, "time", "tail variation" );
 
-
     /* start oscP5, listening for incoming messages at port 12000 */
     oscP5 = new OscP5(this,myPort);
     oscTarget = new NetAddress(oscTargetIP,oscTargetPort);
 
-
+    // send a message to connect to the data
     OscMessage myMessage = new OscMessage("/XOSC/subscribe/tag");  
     myMessage.add("/minibee/data");
     myMessage.add(myPort);
