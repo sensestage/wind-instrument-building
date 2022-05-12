@@ -19,9 +19,9 @@ float releaseTime = 0.5;
 
 
 // the minibee to which we will be listening in this sketch:
-int myMiniBeeID = 3;
+int myMiniBeeID = 1;
 // ADAPT this port to something unique!
-int myPort = 12020;
+int myPort = 12021;
 
 // instance of the OSC connection
 OscP5 oscP5;
@@ -188,7 +188,7 @@ void oscEvent(OscMessage theOscMessage) {
  //println(" typetag: "+theOscMessage.typetag());
   
   if(theOscMessage.checkAddrPattern("/minibee/data")==true){ // look for for the message type
-    if(theOscMessage.checkTypetag("ifffff")) { // receiving int (id) and five float values for the data
+    if(theOscMessage.checkTypetag("ifffffff")) { // receiving int (id) and five float values for the data
       // parse theOscMessage and extract the values from the osc message arguments.
       int id = theOscMessage.get(0).intValue(); // get the minibee ID from the message arguments
       if ( id == myMiniBeeID ){ // if the minibee ID matches the one we are looking for, then parse the rest of the data

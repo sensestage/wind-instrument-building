@@ -5,7 +5,7 @@ import oscP5.*;
 import netP5.*;
 
 // the minibee to which we will be listening in this sketch:
-int myMiniBeeID = 3;
+int myMiniBeeID = 1;
 // ADAPT this port to something unique!
 int myPort = 12020;
 
@@ -165,7 +165,7 @@ void oscEvent(OscMessage theOscMessage) {
  //println(" typetag: "+theOscMessage.typetag());
   
   if(theOscMessage.checkAddrPattern("/minibee/data")==true){ // look for for the message type
-    if(theOscMessage.checkTypetag("ifffff")) { // receiving int (id) and five float values for the data
+    if(theOscMessage.checkTypetag("ifffffff")) { // receiving int (id) and five float values for the data
       // parse theOscMessage and extract the values from the osc message arguments.
       int id = theOscMessage.get(0).intValue(); // get the minibee ID from the message arguments
       if ( id == myMiniBeeID ){ // if the minibee ID matches the one we are looking for, then parse the rest of the data
@@ -180,21 +180,22 @@ void oscEvent(OscMessage theOscMessage) {
         
         checkRange( input );
         
-        // scaling (needs range)
+        //// scaling (needs range)
         output1 = scaleToRange( input );
+        output1 = invertUnipolar( output1 );
         
         output2 = updateExponentialSmooth( output1 );
         
-        //print( output1, output2 );
+        ////print( output1, output2 );
         
         if ( !initialized ){
           initializeMean( output1 );
         }
         output3 = updateMean( output1 );
         
-        output4 = deviation( input, output3 );
-        output5 = updateDelta( input );
-        //output = updateSlope( input );
+        output4 = deviation( output1, output3 );
+        output5 = updateDelta( output1 );
+        //output5 = updateSlope( output1 );
         
         trigger1 = compareLarger( output1, 0.7 );
         upDown = upOrDown( output1, 0.7 );
@@ -224,7 +225,7 @@ float scaleToRange( float val ){
     print( "WARNING: maximum equals minimum, not scaling, returning input value" );
     return val;  
   }
-  float out = (val - minimum) / (maximum - minimum );
+  float out = (val - minimum) / (maximum - minimum);
   return out;
 }
 
@@ -239,7 +240,7 @@ float invertUnipolar( float val ){
 // variables for smoothing
 float smooth = 0.0;
 float prevSmooth = 0.0;
-float alpha=0.05;
+float alpha=0.1;
 
 // exponential smoothing:
 float updateExponentialSmooth( float val ){
@@ -251,13 +252,13 @@ float updateExponentialSmooth( float val ){
 
 ///--------- Mean value ---------
 
-// variables for mean
-int windowSize = 10;
-float inputValues[];
-float sum = 0;
-int inputIndex=0;
+// variables for mean/average
+int windowSize = 10; // we calculate over N samples, the windowSize
+float inputValues[]; // the array for the input values
+float sum = 0; // the sum we calculate
+int inputIndex=0; // the current index where we are writing the next sample in the array
 
-// calculating mean value:
+// calculating mean/average value:
 void initializeMean( float val ){ // initialization
  inputValues = new float[windowSize];
  for ( int i=0; i<windowSize; i++ ){
@@ -293,13 +294,13 @@ float updateSlope( float val ){
   float slope = (val-prevInputSlope) / (now-prevTime);
   prevTime = now;
   prevInputSlope = val;
-  return slope;
+  return slope*10;
 }
 
 ///------------- Deviation of smoothed signal ----------
 
 float deviation( float val, float smooth ){
-    return ( smooth - val );
+    return ( val - smooth );
 }
 
 ///------------- Compare with threshold ----------------
@@ -322,7 +323,7 @@ int upOrDown( float val, float threshold ){
       }
   }
   if ( val < threshold ){ // now smaller than threshold
-      // was it smaller before?
+      // was it larger before?
       if ( prevValUD > threshold ){
         prevValUD = val;
         return -1; // going down  
@@ -396,7 +397,7 @@ boolean downDeadTime( float val, float threshold, int deadTime ){
 boolean canTrigger=true; // used both by triggerAboveReset and triggerBelowReset
 
 boolean triggerAboveReset( float val, float triggerThreshold, float resetThreshold ){
-  int now = millis();
+  //int now = millis();
   if ( val > triggerThreshold ){ // now larger than threshold
     if ( canTrigger ){
       canTrigger = false;
@@ -410,7 +411,7 @@ boolean triggerAboveReset( float val, float triggerThreshold, float resetThresho
 }
 
 boolean triggerBelowReset( float val, float triggerThreshold, float resetThreshold ){
-  int now = millis();
+  //int now = millis();
   if ( val < triggerThreshold ){ // now larger than threshold
     if ( canTrigger ){
       canTrigger = false;
