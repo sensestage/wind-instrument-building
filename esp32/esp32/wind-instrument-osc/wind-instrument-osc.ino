@@ -2,6 +2,8 @@
 #include <WiFiUdp.h>
 #include <OSCMessage.h>
 #include <WiFiAP.h>
+//#include <WebServer.h>
+//#include "EEPROM.h"
 
 #include <Adafruit_NeoPixel.h>  // go to Main Menu --> Sketch --> Include Library --> Manage libraries... search for Adafruit NeoPixel and install it (as of 4th February 2021 latest version is 1.7.0)
 #define PIN 18
@@ -31,12 +33,14 @@ const char *APssid = "Wind-Instrument";
 
 //The udp library class
 WiFiUDP udp;
+//WebServer server(80);
+
 
 boolean connected = false;     //wifi connection
 bool accesspoint = true;       //acccess point mode
 boolean APconnected = false;   //access point connected
 bool registered = false;       //wifi handler registration
-
+//boolean shouldReboot = false;  //flag to use from web update to reboot the ESP
 
 // Set your Static IP address (dummy values initialization)
 IPAddress staIP(192,168,0,129);         //Board static IP
@@ -44,6 +48,22 @@ IPAddress staGateway(192,168,0,1);      //Gateway IP
 IPAddress staSubnet(255,255,255,0);     //Subnet range
 IPAddress primaryDNS(192, 168, 0, 1);   //optional
 IPAddress secondaryDNS(8, 8, 4, 4);     //optional
+
+//IPAddress clientsAddress[10];           //ten clients can be connected in access point mode
+//int numClients = 0;
+
+// WiFi network name and password:
+//String network;
+//String password;
+
+
+//EEPROM global vars
+//#define EEPROM_SIZE 256
+//int addr = 0; // the current address in the EEPROM (i.e. which byte we're going to write to next)
+
+//extern String updateform;
+//extern String loginIndex;
+//extern String style;
 
 
 void setup(){
@@ -58,7 +78,8 @@ void setup(){
   pixels.show();
 
   // MPU sensor
-  Wire.setPins( 4, 3 );
+//  Wire.setPins( 4, 3 );
+  Wire.setPins( 5, 6 );
   // Initialization
   mpu.Initialize();
   // Calibration
@@ -67,9 +88,10 @@ void setup(){
   mpu.Calibrate();
   Serial.println("Calibration MPU6050 complete!");
 
+  
   Serial.println("=====================================");
   Serial.println("Configuring access point...");
-
+  
   //register event handler
   if(!registered){
     registered = true;
@@ -77,25 +99,15 @@ void setup(){
   }
 
 
+  ///eeprom init
+//  EEPROM.begin(EEPROM_SIZE);
+  //lets read the settings anyway
+  //confSettings();  //read configuration from eeprom in both AP (access point) or STA (Station network) modes 
 
+  createAccessPoint();
 
- //Create Access Point
-    WiFi.mode(WIFI_AP);
-    WiFi.softAP(APssid);
-    Serial.println("Wait 100 ms for AP_START...");
-    delay(100);
-
-    Serial.println("Set softAPConfig");
-    IPAddress Ip(192, 168, 0, 1);       //We fix an IP easy to recover without serial monitor
-    IPAddress NMask(255, 255, 255, 0);
-    WiFi.softAPConfig(Ip, Ip, NMask);
-  
-    IPAddress myIP1 = WiFi.softAPIP();
-    Serial.print("Access Point Created!!");
-    Serial.print("IP address: ");
-    Serial.println(myIP1);
-    APconnected = true;
-    connected = true;
+//  startWebServer();
+ 
 }
 
 void loop(){
@@ -109,10 +121,10 @@ void loop(){
     // read the analog values:
     int analogValue0 = analogRead(A0);
     int analogValue1 = analogRead(A1);
-    int analogValue2 = 0;
-    int analogValue3 = 0;
-//    int analogValue2 = analogRead(A2);
-//    int analogValue3 = analogRead(A3);
+//    int analogValue2 = 0;
+//    int analogValue3 = 0;
+    int analogValue2 = analogRead(A2);
+    int analogValue3 = analogRead(A3);
   
     // print out the values you read:
 //    Serial.printf("ADC analog value0 = %d\n",analogValue0);
@@ -207,3 +219,87 @@ void WiFiEvent(WiFiEvent_t event){
           break;
     }
 }
+
+// basic Access Point creation
+void createAccessPoint(){
+   
+   //register to wifi event handler
+    if(!registered){
+      registered = true;
+      WiFi.onEvent(WiFiEvent);
+    }
+ 
+    WiFi.mode(WIFI_AP);
+    WiFi.softAP(APssid);
+    //Serial.println("Wait 100 ms for AP_START...");
+    delay(100);  //"Wait 100 ms for AP_START..."
+
+    Serial.println("Set softAPConfig");
+    IPAddress Ip(192, 168, 0, 1);       //We fix an IP easy to recover without serial monitor
+    IPAddress NMask(255, 255, 255, 0);
+    WiFi.softAPConfig(Ip, Ip, NMask);
+  
+    IPAddress myIP1 = WiFi.softAPIP();
+    Serial.print("Access Point Created!!");
+    Serial.print("AP IP address: ");
+    Serial.println(myIP1);
+    APconnected = true;
+    connected = true;
+    
+}
+
+/*
+void startWebServer(){
+
+  // A simple web server will allow us configuring a bit the board 
+  // start web server
+  server.on("/", handleRoot);       //handleRoot is a function dealing with the actions on the server via browser
+  server.onNotFound(handleNotFound);// a default function dealing with errors during browsing 
+  
+  // additional pages for uploading code by users
+*/
+  /*
+  server.on("/updatecode", HTTP_GET, []() {
+    server.sendHeader("Connection", "close");
+    server.send(200, "text/html", updateform);
+  });
+  */
+  
+  // server.on("/serverIndex", handleUpdateCode);
+  
+  /*handling uploading firmware file */
+  /*
+  server.on("/update", HTTP_POST, []() {
+    server.sendHeader("Connection", "close");
+    server.send(200, "text/plain", (Update.hasError()) ? "FAIL" : "OK");
+    ESP.restart();
+  }, []() {
+    HTTPUpload& upload = server.upload();
+    if (upload.status == UPLOAD_FILE_START) {
+      Serial.printf("Update: %s\n", upload.filename.c_str());
+      if (!Update.begin(UPDATE_SIZE_UNKNOWN)) { //start with max available size
+        Update.printError(Serial);
+      }
+    } else if (upload.status == UPLOAD_FILE_WRITE) {
+      // flashing firmware to ESP
+      if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
+        Update.printError(Serial);
+      }
+    } else if (upload.status == UPLOAD_FILE_END) {
+      if (Update.end(true)) { //true to set the size to the current progress
+        Serial.printf("Update Success: %u\nRebooting...\n", upload.totalSize);
+        shouldReboot = true;
+      } else {
+        Update.printError(Serial);
+      }
+    }
+  });
+  */
+  /*
+  //finally begin server
+  server.begin();
+  Serial.println();
+  Serial.println("Web Server started");
+  Serial.println();
+}
+*/
