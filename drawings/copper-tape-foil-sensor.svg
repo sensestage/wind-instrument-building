@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="copper-tape-foil-sensor.svg"
+   inkscape:export-filename="/home/nescivi/git/projects/wind-instrument-building/drawings/copper-tape-foil-sensor.png"
+   inkscape:export-xdpi="150"
+   inkscape:export-ydpi="150">
+  <defs
+     id="defs2">
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect2404"
+       is_visible="true" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect2400"
+       is_visible="true" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient2381">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop2377" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="1"
+         id="stop2379" />
+    </linearGradient>
+    <pattern
+       inkscape:stockid="Checkerboard"
+       id="Checkerboard"
+       patternTransform="translate(0,0) scale(10,10)"
+       height="2"
+       width="2"
+       patternUnits="userSpaceOnUse"
+       inkscape:collect="always">
+      <rect
+         id="rect1712"
+         height="1"
+         width="1"
+         y="0"
+         x="0"
+         style="fill:black;stroke:none" />
+      <rect
+         id="rect1714"
+         height="1"
+         width="1"
+         y="1"
+         x="1"
+         style="fill:black;stroke:none" />
+    </pattern>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2381"
+       id="linearGradient2383"
+       x1="122.83133"
+       y1="204.44161"
+       x2="140.41726"
+       y2="204.44161"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.08"
+     inkscape:cx="273.28658"
+     inkscape:cy="524.92611"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1366"
+     inkscape:window-height="714"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#f2cd3a;stroke-width:1.965;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 43.336924,158.77801 22.808908,-20.98419 20.07184,20.52802 20.071838,-17.33477 16.42241,16.42241 17.33477,-15.05388"
+       id="path817"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#f2cd3a;stroke-width:1.965;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 43.33834,170.68209 22.808908,-20.98419 20.071841,20.52802 20.071841,-17.33477 16.42241,16.42241 17.33477,-15.05388"
+       id="path817-9"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="opacity:0.29;fill:url(#Checkerboard);fill-opacity:1;stroke:#281717;stroke-width:1.05821824;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect834"
+       width="117.95867"
+       height="51.812828"
+       x="36.3619"
+       y="126.7132" />
+    <text
+       xml:space="preserve"
+       style="font-style:italic;font-variant:normal;font-weight:500;font-stretch:normal;font-size:4.23333311px;line-height:125%;font-family:'CMU Typewriter Text Variable Width';-inkscape-font-specification:'CMU Typewriter Text Variable Width, Medium Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="123.62429"
+       y="140.98706"
+       id="text857"><tspan
+         sodipodi:role="line"
+         id="tspan855"
+         x="123.62429"
+         y="140.98706"
+         style="stroke-width:0.26458332px">copper traces</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:italic;font-variant:normal;font-weight:500;font-stretch:normal;font-size:4.23333311px;line-height:125%;font-family:'CMU Typewriter Text Variable Width';-inkscape-font-specification:'CMU Typewriter Text Variable Width, Medium Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="52.004311"
+       y="123.19611"
+       id="text861"><tspan
+         sodipodi:role="line"
+         id="tspan859"
+         x="52.004311"
+         y="123.19611"
+         style="stroke-width:0.26458332px">conductive foil</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:italic;font-variant:normal;font-weight:500;font-stretch:normal;font-size:4.23333311px;line-height:125%;font-family:'CMU Typewriter Text Variable Width';-inkscape-font-specification:'CMU Typewriter Text Variable Width, Medium Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="-185.41078"
+       y="15.010208"
+       id="text883"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan881"
+         x="-185.41078"
+         y="15.010208"
+         style="stroke-width:0.26458332px">insulated wires</tspan></text>
+    <g
+       id="g2396"
+       transform="translate(-73.740355,-0.7349537)">
+      <text
+         id="text887"
+         y="205.7243"
+         x="148.26634"
+         style="font-style:italic;font-variant:normal;font-weight:500;font-stretch:normal;font-size:4.23333311px;line-height:125%;font-family:'CMU Typewriter Text Variable Width';-inkscape-font-specification:'CMU Typewriter Text Variable Width, Medium Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="stroke-width:0.26458332px"
+           y="205.7243"
+           x="148.26634"
+           id="tspan885"
+           sodipodi:role="line">header</tspan></text>
+      <g
+         id="g2388">
+        <path
+           style="fill:none;fill-rule:evenodd;stroke:#be9d3d;stroke-width:0.96499997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 118.0361,207.1329 h 22.35273"
+           id="path889-7"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:none;fill-rule:evenodd;stroke:#be9d3d;stroke-width:0.96499997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 118.0361,201.65876 h 22.35273"
+           id="path889"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:url(#linearGradient2383);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.36183643px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 123.01225,199.86591 v 9.82927 h 17.22409 v -10.50715 h -17.22409 z"
+           id="path891"
+           inkscape:connector-curvature="0" />
+      </g>
+    </g>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#2736d6;stroke-width:0.765;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 43.336924,158.77801 c -5.770997,0.10192 -11.493228,2.09542 -16.078349,5.60133 -4.585122,3.50592 -8.008736,8.5056 -9.619686,14.04813 -1.923951,6.61942 -1.152575,14.12398 2.69483,19.84375 2.528945,3.75967 6.317042,6.65629 10.608057,8.11159 4.291015,1.4553 9.059667,1.4607 13.353969,0.0151"
+       id="path2398"
+       inkscape:connector-curvature="0"
+       inkscape:path-effect="#path-effect2400"
+       inkscape:original-d="m 43.336924,158.77801 c -8.565748,6.54955 -17.131759,13.09937 -25.698035,19.64946 -8.5662766,6.55008 1.796818,13.2289 2.69483,19.84375 0.898012,6.61485 15.974948,5.41755 23.962026,8.12672" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#47ec4e;stroke-width:0.865;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 43.338339,170.68209 c -4.253366,-0.64147 -8.768958,0.76186 -11.909499,3.70118 -3.140542,2.93933 -4.839377,7.35225 -4.480538,11.63872 0.232288,2.77476 1.289659,5.46319 2.937004,7.70808 1.647346,2.24489 3.873533,4.04773 6.37241,5.2761 2.492562,1.22527 5.260778,1.88568 8.038029,1.91763"
+       id="path2402"
+       inkscape:connector-curvature="0"
+       inkscape:path-effect="#path-effect2404"
+       inkscape:original-d="m 43.338339,170.68209 c -5.463082,5.11303 -10.926426,10.22633 -16.390037,15.3399 -5.46361,5.11356 6.20654,8.65586 9.309414,12.98418 3.102872,4.32833 5.358951,1.27816 8.038029,1.91763" />
+  </g>
+</svg>
