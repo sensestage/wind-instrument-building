@@ -4,10 +4,10 @@
 
 (
 x = SWDataNetwork.new;       // define the network
-x.addExpected(1,'analog');   // define datanode for analog data
-x.addExpected(2,'accelero'); // define datanode for accelerometer data
-x.addExpected(3,'gyro');     // define datanode for gyroscope data
-x.addExpected(4,'angles');   // define datanode for angle data
+x.addExpected(1,'analog',4);   // define datanode for analog data
+x.addExpected(2,'accelero',3); // define datanode for accelerometer data
+x.addExpected(3,'gyro',3);     // define datanode for gyroscope data
+x.addExpected(4,'angles',3);   // define datanode for angle data
 );
 
 // Put the data from the OSC messages on the datanetwork:
@@ -28,19 +28,19 @@ x[\analog].action = { |data| data.postln; };
 // for example adapting the range:
 ~anaRanges = [ [0.3, 0.9], [0.3, 0.9], [0.1,0.9], [0.3,0.9] ].collect{ |it| it.asSpec; };
 
-x.addExpected( 11, 'analogScaled' );
+x.addExpected( 11, 'analogScaled', 4 );
 x[\analog].action = { |data| x.setData( 11, data.collect{ |it,i| ~anaRanges[i].unmap( it ) } ) };
 
 (
 ~accelRange = [ -2, 2].asSpec;
-x.addExpected( 12, 'acceleroScaled' );
+x.addExpected( 12, 'acceleroScaled', 3 );
 x[\accelero].action = { |data| x.setData( 12, ~accelRange.unmap( data ) ) };
 
 ~gyroRange = [ -600, 600].asSpec;
-x.addExpected( 13, 'gyroScaled' );
+x.addExpected( 13, 'gyroScaled', 3 );
 x[\gyro].action = { |data| x.setData( 13, ~gyroRange.unmap( data ) ) };
 
 ~angleRange = [ -180.0, 180.0].asSpec;
-x.addExpected( 14, 'anglesScale' );
+x.addExpected( 14, 'anglesScaled', 3 );
 x[\angles].action = { |data| x.setData( 14, ~angleRange.unmap( data ) ) };
 );
