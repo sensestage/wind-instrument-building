@@ -5,6 +5,8 @@ Files for wind instrument building workshops
 
 In this workshop we use an ESP32-S2 board to send data from self-made sensors and a motion sensor (MPU6050) via WiFi and OSC. This data can be received by e.g. Processing, SuperCollider, or Puredata, or MobMuPlatform (Pd on a phone).
 
+- [presentation slides](https://marijebaalman.eu/Downloads/workshops/wind-instrument-building-linz.pdf)
+
 ## Taipei workshop (May 2022)
 
 In this workshop we use the [Sense/Stage MiniBee](https://sensestage.eu/minibee) to receive data from self-made sensors on kites, as well as the onboard accelerometer.
